@@ -19,10 +19,14 @@ class InputEngine:
         while True: 
             key = sc.getch()
 
-            self.engine.page.handle_input(key) #send an input to the page
-    
+            block = []
             for c in self.engine.components: #send an input to the components
-                c.handle_input(key)
+                block.append(c.handle_input(key))
+       
+            if not (True in block):
+                self.engine.page.handle_input(key) #send an input to the page
+    
+            
                 
             if self.delay > 0:
                 time.sleep(self.delay)
@@ -30,6 +34,6 @@ class InputEngine:
     def control_loop(self):
         shortcut = Shortcuts.Shortcuts()
         while True:
-            if keyboard.is_pressed("ctrl"):
-                key = keyboard.read_key()
-                shortcut.process(key, keyboard.is_pressed("shift")) #send an input to ctrl shortcuts
+            key = keyboard.read_key()
+            shortcut.process(key, keyboard.is_pressed("ctrl"), keyboard.is_pressed("shift")) #send an input to ctrl shortcuts
+            time.sleep(0.05)

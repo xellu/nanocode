@@ -32,6 +32,8 @@ class ViewMenu(Base):
         menu.render(sc)
     
     def handle_input(self, key):
+        if self.show == False: return
+        
         if key == 27: #close menu using escape
             self.close()
         
@@ -48,6 +50,7 @@ class ViewMenu(Base):
         if key == 32 or key == 10 or key == 459 or key == 13:
             if self.options[self.selection].action != None:
                 self.options[self.selection].action()
+        return True
     
     def open(self):
         self.show = True
@@ -62,13 +65,14 @@ class FileMenu(Base):
         
         self.selection = 0
         self.options = [
-            TextLine("[CTRL+N]             New", action=FileManager.file.new),
-            TextLine("[CTRL+O]            Open", action=FileManager.file.open),
-            TextLine("[CTRL+S]            Save", action=FileManager.file.save),
-            TextLine("[CTRL+SHIFT+S]   Save as", action=FileManager.file.save_as),
-            TextLine("[CTRL+Q]            Quit", action=Actions.quit),
-            TextLine("                        "),   
-            TextLine("[ESC]              Close", action=self.close)
+            TextLine("[CTRL+N]                   New", action=FileManager.file.new),
+            TextLine("[CTRL+O]                  Open", action=FileManager.file.open),
+            TextLine("[CTRL+SHIFT+O]  Open Workspace", action=FileManager.file.open),
+            TextLine("[CTRL+S]                  Save", action=FileManager.file.save),
+            TextLine("[CTRL+SHIFT+S]         Save as", action=FileManager.file.save_as),
+            TextLine("[CTRL+Q]                  Quit", action=Actions.quit),
+            TextLine("                              "),   
+            TextLine("[ESC]                    Close", action=self.close)
         ]
     
     def render(self, sc):
@@ -77,7 +81,7 @@ class FileMenu(Base):
         menu = MenuBox(
             title = "File",
             lines = self.options,
-            width=26,
+            width=32,
             highlight_index=self.selection
         )
         
@@ -85,6 +89,8 @@ class FileMenu(Base):
         
     
     def handle_input(self, key):
+        if self.show == False: return
+        
         if key == 27: #close menu using escape
             self.close()
         
@@ -101,7 +107,7 @@ class FileMenu(Base):
         if key == 32 or key == 10 or key == 459 or key == 13:
             if self.options[self.selection].action != None:
                     self.options[self.selection].action()
-        
+        return True
         
     
     def open(self):

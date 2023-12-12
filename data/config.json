@@ -1,7 +1,9 @@
 {
-    "version": "1.0.0",
     "screenX": 120,
     "screenY": 28,
-
+    "showFps": true,
+    "tabIndent": 4,
+    "gutter": true,
+    "lineNumbers": true,
     "theme": "default"
 }

@@ -3,7 +3,7 @@ class Editor:
         pass
     
     def render(self, sc):
-        pass
+        sc.addstr(1,0, "Editor")
     
     def handle_input(self, key):
         pass

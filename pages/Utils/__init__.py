@@ -1,4 +1,4 @@
-# import os
+import os
 # import curses
 
 engine = None
@@ -22,3 +22,6 @@ def screenX():
 
 def screenY():
     return engine.config.screenY
+
+def open_url(url):
+    os.system(f"start \"\" {url}")

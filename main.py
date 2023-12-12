@@ -1,32 +1,41 @@
+from dataforge import config
+from dataforge.core import notification
+
+try:
+    cfg = config.Config("data/config.json")
+    required_fields = ["screenX", "screenY", "theme", "tabIndent"]
+    for field in required_fields:
+        if not hasattr(cfg, field): raise notification.error(f"Config file is corrupted, missing required field: {field}")
+except:
+    raise notification.error(f"Config file is corrupted, unable to load")
+
+
+
 import os
 import time
 import threading
 
-from pages import Welcome
+from pages import StartScreen
 from pages import Utils
 from pages.Components import NavBar, Menus
 
-from dataforge import config
-from dataforge.core import notification
+from engine import RenderEngine, InputEngine, Actions, SessionEngine
 
-from engine import RenderEngine, InputEngine, Actions
 
-cfg = config.Config("data/config.json")
 components = [
-        NavBar.component,
-        Menus.file, Menus.view
-    ]
+    NavBar.component,
+    Menus.file, Menus.view
+]
 
-required_fields = ["version", "screenX", "screenY", "theme"]
-for field in required_fields:
-    if not hasattr(cfg, field): raise notification.warn(f"Config file is corrupted, missing required field: {field}")
+
+SessionEngine.Session()
 
 #STARTUP----------------------------------------------------
 def main():
     threading.Thread(target=render.start).start()
     threading.Thread(target=inputs.start).start()
 
-render = RenderEngine.RenderEngine(Welcome.page, components=components, config=cfg)
+render = RenderEngine.RenderEngine(StartScreen.page, components=components, config=cfg)
 inputs = InputEngine.InputEngine(engine=render, delay_ms=0)
 Utils.engine = render
 
@@ -35,6 +44,6 @@ try:
     while True:
         time.sleep(1)
 except KeyboardInterrupt:
-    Actions.quit()
-    
+    # print("Use CTRL+Q to exit")
+    Actions.quit()    
 #-----------------------------------------------------------

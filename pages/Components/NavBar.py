@@ -22,7 +22,10 @@ class NavBar(Base):
             self.nav_menu += f"   [{i.display_key}] {i.name} "
         
     def settings_page(self):
-        RenderEngine.instance.page = Settings.page
+        if RenderEngine.instance.page != Settings.page:
+            Settings.page.open(RenderEngine.instance.page)
+        else:
+            RenderEngine.open_page(Settings.page.return_page)
         
     def file_menu(self):
         Menus.toggle("file")
@@ -42,7 +45,7 @@ class NavBar(Base):
         for item in self.quick_menu:
             if key in item.key:
                 item.action()
-                return
+                return True
             
              
 component = NavBar()

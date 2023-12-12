@@ -4,6 +4,7 @@ from pages import Base, Editor
 
 from dataforge.core import notification
 from engine import ThemeEngine
+import time
 
 instance = None
 
@@ -16,6 +17,11 @@ class RenderEngine:
         self.components = components
         self.sc = None
         self.config = config
+        self.fps = 0
+        self.framerate = {
+            "frames": 0,
+            "reset": time.time()
+        }
         
         
         if not self.config: raise notification.warn("No config was provided")
@@ -23,6 +29,7 @@ class RenderEngine:
         
     def start(self):
         curses.wrapper(self.loop)
+    
     
     def render(self, sc):
         #render a page
@@ -48,9 +55,22 @@ class RenderEngine:
             
             #rendering logic
             self.render(sc)
-                
+            
+            if self.config.get("showFps"):
+                sc.addstr(1, 0, f"FPS: {self.fps}")
+                            
             #update screen
             sc.refresh()
+            
+            #calculate fps
+            self.framerate["frames"] += 1
+            if time.time() >= self.framerate["reset"]:
+                self.fps = self.framerate["frames"]
+                self.framerate["frames"] = 0
+                self.framerate["reset"] = time.time() + 1
+        
+def get_instance():
+    return instance
             
 def open_page(page):
     instance.page = page

@@ -20,20 +20,27 @@ class ThemeLoader:
         out = []
         for theme in os.listdir("data/themes"):
             if theme.endswith(".theme.json"):
-               if self.validate_theme(theme):
-                    out.append((theme, self.get_theme_data(theme)))
+               if self.validate_theme(theme.replace(".theme.json", "")):
+                    out.append((theme, self.get_theme_data(theme.replace(".theme.json", ""))))
         return out
     
-    def validate_theme(self, file):
-        f = config.Config("data/themes/" + file + ".theme.json")
+    def get_theme_names(self):
+        themes = self.get_themes()
+        out = []
+        for t in themes:
+            out.append(t[0].replace(".theme.json", ""))
+        return out
+    
+    def validate_theme(self, name):
+        f = config.Config("data/themes/" + name + ".theme.json")
         required_fields = ["name", "author", "colors", "syntax"]
         for field in required_fields:
             if not hasattr(f, field): return (False, f"Missing field for {field}")
         
         return (True, None)
     
-    def get_theme_data(self, file):
-        f = config.Config("data/themes/" + file + ".theme.json")
+    def get_theme_data(self, name):
+        f = config.Config("data/themes/" + name + ".theme.json")
         return f
             
     def to_colors(self, text_colors):
