@@ -62,7 +62,7 @@ class Settings(Base):
         
         self.options = [
             Option("Interface", None, "display_title"),
-            Option("Screen Width", (self.config, "screenX"), "int", min_value=100, max_value=300, description="The width of the screen in characters"),
+            Option("Screen Width", (self.config, "screenX"), "int", min_value=120, max_value=300, description="The width of the screen in characters"),
             Option("Screen Height", (self.config, "screenY"), "int", min_value=28, max_value=300, description="The height of the screen in characters"),
             Option("Theme", (self.config, "theme"), "enum", enum=Loader.get_theme_names(), description="Color appearance of the application"),
             Option("Show FPS", (self.config, "showFps"), "bool", description="Shows the framerate in the top left corner of the screen"),
@@ -84,8 +84,8 @@ class Settings(Base):
         self.selection = 1
         
     def render(self, sc):
-        sc.addstr(2,0, "#"*Utils.screenX(), curses.color_pair(Colors.accent))
-        sc.addstr(2,Utils.centerX("a Settings a"), "] Settings [", curses.color_pair(Colors.accent))
+        sc.addstr(2,0, "="*Utils.screenX(), curses.color_pair(Colors.accent))
+        sc.addstr(2,Utils.centerX("a Settings a"), "[ Settings ]", curses.color_pair(Colors.accent))
         sc.addstr(Utils.screenY()-1, 0, " "*Utils.screenX(), curses.color_pair(Colors.accent_bg))
         sc.addstr(Utils.screenY(), 0, " "*Utils.screenX(), curses.color_pair(Colors.accent_bg))
         sc.addstr(Utils.screenY(), Utils.centerX(self.guide), self.guide, curses.color_pair(Colors.accent_bg))
@@ -93,7 +93,7 @@ class Settings(Base):
     
         if self.changed and self.changed_expire >= time.time():
             menu = MenuBox(
-                f"Disclaimer ({self.changed_expire - time.time():.0f}s)",
+                f"Settings Saved ({self.changed_expire - time.time():.0f}s)",
                 lines = [
                     TextLine("To apply changes, you'll need", center=True),
                     TextLine("to restart the application", center=True),

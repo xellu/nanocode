@@ -9,21 +9,34 @@ class TextLine:
         self.action = action
         
 class MenuBox:
-    def __init__(self, title, lines: list, width: int = 20, outline: bool=True, highlight_index: int = None, warning: bool = False):
+    def __init__(self, title, lines: list, width: int = 20, outline: bool=True, highlight_index: int = None, warning: bool = False, x: int = None, y: int = None):
         self.title = f"[ {title} ]"
         self.lines = lines
         self.outline = outline
         self.width = width
         self.highlight_index = highlight_index
         self.warning = warning
+        self.x = x
+        self.y = y
         
         self.color_bg = Colors.warning_bg if self.warning else Colors.accent_bg
         self.color_fg = Colors.warning if self.warning else Colors.accent
         
-        self.startY = int(Utils.centerY() - (len(lines) / 2))
-        self.endY = self.startY + len(lines)
-        self.startX = Utils.centerX("x"*width)
-        self.endX = self.startX + width
+        
+        if x == None:
+            self.startX = Utils.centerX("x"*width)
+            self.endX = self.startX + width
+        else:
+            self.startX = x
+            self.endX = x + width
+        
+        if y == None:
+            self.startY = int(Utils.centerY() - (len(lines) / 2))
+            self.endY = self.startY + len(lines)
+        else:
+            self.startY = y
+            self.endY = y + len(lines)
+            
         
     def render(self, sc):
         # Draw outline
@@ -36,7 +49,10 @@ class MenuBox:
                 sc.addstr(self.endY+1, x, "#", curses.color_pair(self.color_bg))
             
         # Draw title
-        sc.addstr(self.startY, Utils.centerX(self.title), self.title, curses.color_pair(self.color_bg))
+        if self.x == None:
+            sc.addstr(self.startY, Utils.centerX(self.title), self.title, curses.color_pair(self.color_bg))
+        else:
+            sc.addstr(self.startY, self.x+5, self.title, curses.color_pair(self.color_bg))
         
         # Draw lines
         for line in self.lines:

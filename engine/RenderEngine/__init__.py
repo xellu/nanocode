@@ -32,6 +32,9 @@ class RenderEngine:
     
     
     def render(self, sc):
+        #set the background to theme color
+        sc.bkgd(" ", curses.color_pair(ThemeEngine.Colors.normal))
+        
         #render a page
         self.page.render(sc)
         

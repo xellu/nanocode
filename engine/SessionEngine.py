@@ -22,7 +22,7 @@ class Session:
             return config.Config("data/session.json")
         
         open("data/session.json", "w").write(json.dumps(self.template))
-        return self.template
+        return self.get_data()
     
     def repair_config(self):
         if not os.path.exists("data/session.json"):
@@ -35,3 +35,6 @@ class Session:
                 data.Set(key, self.template[key])
                 
         data.save()
+        
+    def open_workspace(self):
+        pass
