@@ -1,0 +1,14 @@
+{
+    "name": "Default",
+    "author": "NanoCode",
+    "colors": {
+        "foreground": "WHITE",
+        "background": "BLACK",
+        "accent": "GREEN",
+        "warning": "RED",
+        "pointer": "BLACK"
+    },
+    "syntax": {
+
+    }
+}
