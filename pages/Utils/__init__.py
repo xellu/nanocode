@@ -1,7 +1,8 @@
 import os
 # import curses
+from dataforge.config import Config
 
-engine = None
+config = Config("data/config.json")
 
 def centerX(x: str):
     return int( screenX() / 2 ) - int( len(x) /2 )
@@ -18,10 +19,10 @@ def endX(x):
     return int(w - lenx)
 
 def screenX():
-    return engine.config.screenX
+    return config.screenX
 
 def screenY():
-    return engine.config.screenY
+    return config.screenY
 
 def open_url(url):
     os.system(f"start \"\" {url}")

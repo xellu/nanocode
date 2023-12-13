@@ -64,9 +64,10 @@ class Welcome(Base):
         
     def get_recents(self):
         if len(self.recent) > 5:
-            self.recents = self.recent[:5]
+            recents = self.recent[:5]
+            
             cfg = self.session.get_data()
-            cfg.set("recent", self.recents)
+            cfg.Set("recent", self.recents)
             cfg.save()
             
         out = []

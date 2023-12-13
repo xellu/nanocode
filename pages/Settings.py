@@ -1,5 +1,5 @@
 from pages import Base, Utils
-from pages.Utils.MenuBox import MenuBox, TextLine
+from pages.Utils.MenuBox import MenuBox, TextLine, PromptBox
 from engine import RenderEngine
 from engine.ThemeEngine import Colors, Loader
 from engine import About
@@ -60,6 +60,8 @@ class Settings(Base):
         self.guide = "[UP/DOWN] Navigate   [LEFT/RIGHT] Change Value   [ENTER] Press Button   [ESC] Reset Value"
         self.guide_2 = "[S] Save changes   [D] Discard changes"
         
+        self.prompt = PromptBox("Path", [TextLine("Enter a path to open")], callback=Utils.open_url, width=30)
+        
         self.options = [
             Option("Interface", None, "display_title"),
             Option("Screen Width", (self.config, "screenX"), "int", min_value=120, max_value=300, description="The width of the screen in characters"),
@@ -83,7 +85,14 @@ class Settings(Base):
         
         self.selection = 1
         
+        self.prompt.open()
+        
     def render(self, sc):
+        if self.prompt.is_confirmed():
+            sc.addstr(2,2,self.prompt.output()) 
+            
+        return
+        
         sc.addstr(2,0, "="*Utils.screenX(), curses.color_pair(Colors.accent))
         sc.addstr(2,Utils.centerX("a Settings a"), "[ Settings ]", curses.color_pair(Colors.accent))
         sc.addstr(Utils.screenY()-1, 0, " "*Utils.screenX(), curses.color_pair(Colors.accent_bg))

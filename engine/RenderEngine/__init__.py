@@ -3,7 +3,7 @@ import os
 from pages import Base, Editor
 
 from dataforge.core import notification
-from engine import ThemeEngine
+from engine import ThemeEngine, InputEngine
 import time
 
 instance = None
@@ -51,7 +51,7 @@ class RenderEngine:
         self.sc = sc
         curses.start_color()
         ThemeEngine.Loader.load_from_config()
-        
+
         while True:
             #clear screen
             sc.clear()
@@ -61,6 +61,8 @@ class RenderEngine:
             
             if self.config.get("showFps"):
                 sc.addstr(1, 0, f"FPS: {self.fps}")
+                sc.addstr(2, 0, str(InputEngine.get_instance().key))
+                sc.addstr(3, 0, chr(InputEngine.get_instance().key))
                             
             #update screen
             sc.refresh()

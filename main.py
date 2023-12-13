@@ -1,3 +1,5 @@
+
+
 from dataforge import config
 from dataforge.core import notification
 
@@ -17,14 +19,16 @@ import threading
 
 from pages import StartScreen
 from pages import Utils
+from pages.Utils import MenuBox
 from pages.Components import NavBar, Menus
 
 from engine import RenderEngine, InputEngine, Actions, SessionEngine
 
 
 components = [
-    NavBar.component,
-    Menus.file, Menus.view
+    NavBar.component, 
+    Menus.file, Menus.view,
+    MenuBox.prompt
 ]
 
 
